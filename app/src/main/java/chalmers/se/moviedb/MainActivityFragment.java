@@ -1,14 +1,14 @@
 package chalmers.se.moviedb;
 
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,14 +34,17 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         Log.v(MainActivityFragment.class.getSimpleName(), "Creating fragment view");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        List<Movie> movies = new ArrayList<>();
+//        GridView grid = (GridView) rootView.findViewById(R.id.main_movie_grid_view);
+//        grid.setAdapter(new ImageAdapter(getActivity(), movies));
 
-        GridView grid = (GridView) rootView.findViewById(R.id.main_movie_grid_view);
-        grid.setAdapter(new ImageAdapter(getActivity(), movies));
+        RecyclerView view = (RecyclerView) rootView.findViewById(R.id.main_movie_grid_view);
+        view.setHasFixedSize(true);
+//        GridLayoutManager manager = new GridLayoutManager()
+        List<Movie> movies = new ArrayList<>();
+        view.setAdapter(new MovieAdapter(getActivity(), movies));
 
         try {
             movies.addAll(new FetchMovieData().execute().get());
@@ -137,6 +140,7 @@ public class MainActivityFragment extends Fragment {
                 String rating = movieJson.getString(RATING);
                 String plot = movieJson.getString(OVERVIEW);
                 String releaseDate = movieJson.getString(RELEASE_DATE);
+
 
                 Movie movie = new Movie(title, releaseDate, plot, rating, posterPath);
                 downloadedMovies.add(movie);
