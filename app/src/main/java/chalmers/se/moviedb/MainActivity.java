@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if(savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new MainActivityFragment())
+                    .commit();
+        }
+
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
